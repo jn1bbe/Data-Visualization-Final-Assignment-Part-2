@@ -51,7 +51,7 @@ app.layout = html.Div([
     html.Div(dcc.Dropdown(
             id='select-year',
             options=[{'label': i, 'value': i} for i in year_list],
-            value='Select Statistics',
+            value='Select-year',
             style={'width': '80%', 'padding': '3px', 'font-size': '20px', 'text-align-last': 'center'}
         )),
     html.Div([#TASK 2.3: Add a division for output display
@@ -104,7 +104,7 @@ def update_output_container(selected_statistics, input_year):
 
 # Plot 4 bar chart for the effect of unemployment rate on vehicle type and sales
         unemploy_vt_sales = recession_data.groupby(['unemployment_rate', 'Vehicle_Type'])['Automobile_Sales'].mean().reset_index()
-        R_chart4 = dcc.Grpah(figure=px.bar(unemploy_vt_sales, x = 'Vehicle_Type', y = 'Automobile_Sales', title = "The Effect of Unemployment Rate on Vehicle type and Sales"))
+        R_chart4 = dcc.Graph(figure=px.bar(unemploy_vt_sales, x = 'Vehicle_Type', y = 'Automobile_Sales', title = "The Effect of Unemployment Rate on Vehicle type and Sales"))
 
         return [
             html.Div(className='chart-item', children=[html.Div(children=R_chart1),html.Div(children=R_chart2)],style={'display': 'flex'}),
