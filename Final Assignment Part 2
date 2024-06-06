@@ -15,6 +15,7 @@ import plotly.express as px
 
 # Load the data using pandas
 data = pd.read_csv('https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-DV0101EN-SkillsNetwork/Data%20Files/historical_automobile_sales.csv')
+data['Year'] = data['Year'].astype(int)
 
 # Initialize the Dash app
 app = dash.Dash(__name__)
@@ -117,22 +118,22 @@ def update_output_container(selected_statistics, input_year):
             ]
 
 # TASK 2.6: Create and display graphs for Yearly Report Statistics
- # Yearly Statistic Report Plots  
-    input_year = int(input_year)                           
+ # Yearly Statistic Report Plots                             
     elif (input_year and selected_statistics=='Yearly Statistics') :
+        input_year = int(input_year)
         yearly_data = data[data['Year'] == input_year],
         print(f"Size of yearly_data: {len(yearly_data)}")                      
                               
 #plot 1 Yearly Automobile sales using line chart for the whole period.
-        yas= yearly_data.groupby('Year')['Automobile_Sales'].mean().reset_index()
+        yas= yearly_data.groupby('Year')['Automobile_Sales'].sum().reset_index()
         Y_chart1 = dcc.Graph(figure=px.line(yas, x = 'Year', y='Automobile_Sales', title="Average Automobile Sales fluctuation over Recession Period"))
         print(f"Data for Y_chart1: {yas}")
 # Plot 2 Total Monthly Automobile sales using line chart.
-        tma = yearly_data.groupby('Month')['Automobile_Sales'].mean().reset_index()
+        tma = yearly_data.groupby('Month')['Automobile_Sales'].sum().reset_index()
         Y_chart2 = dcc.Graph(figure=px.line(tma, x = 'Month', y='Automobile_Sales', title="Total Monthly Automobile sales"))
         print(f"Data for Y_chart2: {tma}")
             # Plot bar chart for average number of vehicles sold during the given year
-        avr_vdata=yearly_data.groupby('Year')['Automobile_Sales'].mean().reset_index()
+        avr_vdata=yearly_data.groupby('Year')['Automobile_Sales'].sum().reset_index()
         Y_chart3 = dcc.Graph(figure=px.bar(avr_vdata, x = 'Year', y = 'Automobile_Sales' , title='Average Vehicles Sold by Vehicle Type in the year {}'.format(input_year)))
         print(f"Data for Y_chart3: {avr_vdata}")
             # Total Advertisement Expenditure for each vehicle using pie chart
