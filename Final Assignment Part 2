@@ -117,7 +117,8 @@ def update_output_container(selected_statistics, input_year):
             ]
 
 # TASK 2.6: Create and display graphs for Yearly Report Statistics
- # Yearly Statistic Report Plots                             
+ # Yearly Statistic Report Plots  
+    input_year = int(input_year)                           
     elif (input_year and selected_statistics=='Yearly Statistics') :
         yearly_data = data[data['Year'] == input_year],
         print(f"Size of yearly_data: {len(yearly_data)}")                      
