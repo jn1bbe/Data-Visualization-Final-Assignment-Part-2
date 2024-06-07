@@ -51,12 +51,13 @@ app.layout = html.Div([
     ]),
     
     html.Div(
-        [dcc.Dropdown(
+        dcc.Dropdown(
             id='select-year',
             options=[{'label': i, 'value': i} for i in year_list],
-            placeholder='Select-year',
+            value='Select Year',
+            placeholder='Select Year',
             style={'width': '80%', 'padding': '3px', 'font-size': '20px', 'text-align-last': 'center'}
-        )]),
+        )),
     html.Div([#TASK 2.3: Add a division for output display
     html.Div(id='output-container', className='chart-grid', style={'display': 'flex'}),])
     
@@ -110,7 +111,7 @@ def update_output_container(selected_statistics, input_year):
 
 # Plot 4 bar chart for the effect of unemployment rate on vehicle type and sales
         unemploy_vt_sales = recession_data.groupby(['unemployment_rate', 'Vehicle_Type'])['Automobile_Sales'].mean().reset_index()
-        R_chart4 = dcc.Graph(figure=px.bar(unemploy_vt_sales, x = 'Vehicle_Type', y = 'Automobile_Sales', title = "The Effect of Unemployment Rate on Vehicle type and Sales"))
+        R_chart4 = dcc.Graph(figure=px.bar(unemploy_vt_sales, x = 'unemployment_rate', y = 'Automobile_Sales', title = "The Effect of Unemployment Rate on Vehicle type and Sales"))
 
         return [
             html.Div(className='chart-item', children=[html.Div(children=R_chart1),html.Div(children=R_chart2)],style={'display': 'flex'}),
@@ -125,19 +126,19 @@ def update_output_container(selected_statistics, input_year):
         print(f"Size of yearly_data: {len(yearly_data)}")                      
                               
 #plot 1 Yearly Automobile sales using line chart for the whole period.
-        yas= yearly_data.groupby('Year')['Automobile_Sales'].sum().reset_index()
+        yas= data.groupby('Year')['Automobile_Sales'].mean().reset_index()
         Y_chart1 = dcc.Graph(figure=px.line(yas, x = 'Year', y='Automobile_Sales', title="Average Automobile Sales fluctuation over Recession Period"))
         print(f"Data for Y_chart1: {yas}")
 # Plot 2 Total Monthly Automobile sales using line chart.
-        tma = yearly_data.groupby('Month')['Automobile_Sales'].sum().reset_index()
-        Y_chart2 = dcc.Graph(figure=px.line(tma, x = 'Month', y='Automobile_Sales', title="Total Monthly Automobile sales"))
-        print(f"Data for Y_chart2: {tma}")
+        mas = data.groupby('Month')['Automobile_Sales'].mean().reset_index()
+        Y_chart2 = dcc.Graph(figure=px.line(mas, x = 'Month', y='Automobile_Sales', title="Total Monthly Automobile sales"))
+        print(f"Data for Y_chart2: {mas}")
             # Plot bar chart for average number of vehicles sold during the given year
-        avr_vdata=yearly_data.groupby('Year')['Automobile_Sales'].sum().reset_index()
+        avr_vdata=data.groupby('Year')['Automobile_Sales'].mean().reset_index()
         Y_chart3 = dcc.Graph(figure=px.bar(avr_vdata, x = 'Year', y = 'Automobile_Sales' , title='Average Vehicles Sold by Vehicle Type in the year {}'.format(input_year)))
         print(f"Data for Y_chart3: {avr_vdata}")
             # Total Advertisement Expenditure for each vehicle using pie chart
-        exp_data=yearly_data.groupby('Vehicle_Type')['Advertising_Expenditure'].sum().reset_index()
+        exp_data=data.groupby('Vehicle_Type')['Advertising_Expenditure'].mean().reset_index()
         Y_chart4 = dcc.Graph(figure=px.pie(exp_data, values='Advertising_Expenditure', names='Vehicle_Type', title="Total Advertisement Expenditure for each vehicle"))
         print(f"Data for Y_chart4: {exp_data}")
 #TASK 2.6: Returning the graphs for displaying Yearly data
